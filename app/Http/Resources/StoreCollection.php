@@ -4,8 +4,9 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class StoreProductCollection extends ResourceCollection
+class StoreCollection extends ResourceCollection
 {
+
     private $pagination;
 
     public function __construct($resource)
@@ -33,4 +34,5 @@ class StoreProductCollection extends ResourceCollection
         return
           [ $this->collection,$this->pagination];
     }
+
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Category;
-
+use App\Http\Resources\CategoryCollection;
 use Validator;
 
 class CategoryController extends Controller
@@ -17,7 +17,10 @@ class CategoryController extends Controller
     {
         $productList = Category::paginate(10);
 
-        return response()->json($productList, 200);}
+        return response()->json($productList, 200);
+        return new CategoryCollection(Category::paginate(10));
+
+    }
 
     /**
      * Show the form for creating a new resource.

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserTypeCollection;
-use App\UserType;
 use Illuminate\Http\Request;
+use App\OrderDetails;
+
+use  App\Http\Resources\OrderDetailCollection;
 use Validator;
-class UserTypeController extends Controller
+
+
+class OrderDetailsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +18,7 @@ class UserTypeController extends Controller
      */
     public function index()
     {
-        return new UserTypeCollection(UserType::paginate(10));
+        return new OrderDetailCollection(OrderDetails::paginate(10));
 
     }
 
@@ -38,16 +41,16 @@ class UserTypeController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required|min:3',
-            'email' => 'required',
-            'password' => 'required',
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-        $userType = UserType::create($request->all());
-        return response()->json($userType, 201);
+            // 'user_id' =>'required',
+            // 'store_id' =>'required',
+            // 'shipName' =>'required|min:5',
+           ];
+           $validator = Validator::make($request->all(),$rules);
+           if ($validator->fails()) {
+               return response()->json($validator->errors(),400);
+           }
+           $orderDetail = OrderDetails::create($request->all());
+           return response()->json($orderDetail,201);
     }
 
     /**
@@ -58,11 +61,11 @@ class UserTypeController extends Controller
      */
     public function show($id)
     {
-        $userType = UserType::find($id);
-        if (is_null($userType)) {
-            return response()->json(["message" => "Record not found!"], 404);
+        $orderDetail =orderDetails::find($id);
+        if (is_null($orderDetail)) {
+            return response()->json(["message"=>"Record not found!"],404);
         }
-        return response()->json($userType, 200);
+        return response()->json($orderDetail,200);
     }
 
     /**
@@ -85,12 +88,12 @@ class UserTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $UserType = UserType::find($id);
-        if (is_null($UserType)) {
-            return response()->json(["message" => "Record not found!"], 404);
+        $orderDetail =orderDetails::find($id);
+        if (is_null($orderDetail)) {
+            return response()->json(["message"=>"Record not found!"],404);
         }
-        $UserType->update($request->all());
-        return response()->json($UserType, 200);
+        $orderDetail->update($request->all());
+        return response()->json($orderDetail,200);
     }
 
     /**
@@ -101,11 +104,11 @@ class UserTypeController extends Controller
      */
     public function destroy($id)
     {
-        $UserType = UserType::find($id);
-        if (is_null($UserType)) {
-            return response()->json(["message" => "Record not found!"], 404);
+        $orderDetail =orderDetails::find($id);
+        if (is_null($orderDetail)) {
+            return response()->json(["message"=>"Record not found!"],404);
         }
-        $UserType->delete();
-        return response()->json(["message" => "Record deleted "], 204);
+        $orderDetail->delete();
+        return response()->json(["message"=>"Record deleted "],204);
     }
 }

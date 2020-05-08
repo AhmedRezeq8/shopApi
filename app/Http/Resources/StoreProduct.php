@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\StoreProducts;
+
 class StoreProduct extends JsonResource
 {
     /**
@@ -17,25 +17,28 @@ class StoreProduct extends JsonResource
         return [
             'id' => $this->id,
 
-            'store' =>$this->store->Name,
-        //   'product' =>$this->product['name'],
-          'product' =>$this->product->name,
-
-
-            // for details uncomment code below
-            //   'store' => [
-            //     'id' => $this->store->id,
-            //     'name' => $this->store->Name,
-            // ],
+            'store' => $this->store->name,
+            'storeid' => $this->store->id,
+            'cat_id' => $this->category->id,
+            'cat_name' => $this->category->name,
+            'cat_img' => $this->category->img,
 
             // 'product' => [
-            //     'id' => $this->product['id'],
-            //     'name' => $this->product['name'],
+            'product_id' => $this->product->id,
+            'product_name' => $this->product->name,
+            'product_SKU' => $this->product->SKU,
+            'product_weight' => $this->product->weight,
+            'product_desc' => $this->product->desc,
+            'product_thump' => $this->product->thump,
+            'product_image' => $this->product->image,
+            'product_IsApproved' => $this->product->IsApproved,
+            'product_created_at' => $this->product->created_at,
+            'product_updated_at' => $this->product->updated_at,
+
             // ],
             'productPrice' => $this->productPrice,
             'productDiscount' => $this->productDiscount,
             'productStock' => $this->productStock,
-
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

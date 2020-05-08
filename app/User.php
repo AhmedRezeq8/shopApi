@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -16,9 +15,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'fBase_id','user_type_id'
     ];
-
+    public function userType()
+    {
+        return $this->belongsTo('App\UserType');
+    }
     /**
      * The attributes that should be hidden for arrays.
      *

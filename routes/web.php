@@ -22,3 +22,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
  Route::get('/products', 'ProductsController@webindex')->name('products');
+
+// // API ROUTES
+//  Route::apiResource("api/v1/products", "ProductsController");
+//  Route::apiResource("api/v1/categories", "CategoryController");
+//  Route::apiResource("api/v1/stores", "StoresController");
+//  Route::apiResource("api/v1/storesproducts", "StoreProductsController");
+//  Route::apiResource("api/v1/orders", "OrdersController");

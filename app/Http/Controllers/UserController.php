@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserTypeCollection;
-use App\UserType;
+use App\Http\Resources\UserCollection;
+// use App\User;
+use App\Users;
 use Illuminate\Http\Request;
 use Validator;
-class UserTypeController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,7 @@ class UserTypeController extends Controller
      */
     public function index()
     {
-        return new UserTypeCollection(UserType::paginate(10));
+        return new UserCollection(Users::paginate(10));
 
     }
 
@@ -46,8 +47,8 @@ class UserTypeController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        $userType = UserType::create($request->all());
-        return response()->json($userType, 201);
+        $User = Users::create($request->all());
+        return response()->json($User, 201);
     }
 
     /**
@@ -58,11 +59,11 @@ class UserTypeController extends Controller
      */
     public function show($id)
     {
-        $userType = UserType::find($id);
-        if (is_null($userType)) {
-            return response()->json(["message" => "Record not found!"], 404);
+        $User =Users::where('fBase_id',$id)->first();
+        if (is_null($User)) {
+            return response()->json(["message"=>"Record not found!"],404);
         }
-        return response()->json($userType, 200);
+        return response()->json($User,200);
     }
 
     /**
@@ -85,12 +86,12 @@ class UserTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $UserType = UserType::find($id);
-        if (is_null($UserType)) {
-            return response()->json(["message" => "Record not found!"], 404);
+        $User =Users::find($id);
+        if (is_null($User)) {
+            return response()->json(["message"=>"Record not found!"],404);
         }
-        $UserType->update($request->all());
-        return response()->json($UserType, 200);
+        $User->update($request->all());
+        return response()->json($User,200);
     }
 
     /**
@@ -101,11 +102,11 @@ class UserTypeController extends Controller
      */
     public function destroy($id)
     {
-        $UserType = UserType::find($id);
-        if (is_null($UserType)) {
-            return response()->json(["message" => "Record not found!"], 404);
+        $User =Users::find($id);
+        if (is_null($User)) {
+            return response()->json(["message"=>"Record not found!"],404);
         }
-        $UserType->delete();
-        return response()->json(["message" => "Record deleted "], 204);
+        $User->delete();
+        return response()->json(["message"=>"Record deleted "],204);
     }
 }

@@ -18,7 +18,7 @@ class CreateStoresTable extends Migration
 
             $table->integer('user_id')->nullable();
 
-            $table->string('Name', 100)->nullable();
+            $table->string('name', 100)->nullable();
 
             $table->integer('Il_id')->unsigned();
             $table->integer('Ilce_id')->unsigned();

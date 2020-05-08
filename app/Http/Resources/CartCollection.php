@@ -4,8 +4,14 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class StoreProductCollection extends ResourceCollection
+class CartCollection extends ResourceCollection
 {
+    /**
+     * Transform the resource collection into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
     private $pagination;
 
     public function __construct($resource)
@@ -20,7 +26,6 @@ class StoreProductCollection extends ResourceCollection
             'prev_page_url' => $resource->previousPageUrl(),
             'total' => $resource->count(),
 
-
         ];
 
         $resource = $resource->getCollection();
@@ -31,6 +36,6 @@ class StoreProductCollection extends ResourceCollection
     public function toArray($request)
     {
         return
-          [ $this->collection,$this->pagination];
+            [$this->collection, $this->pagination];
     }
 }

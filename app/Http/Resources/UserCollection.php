@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class StoreProductCollection extends ResourceCollection
+class UserCollection extends ResourceCollection
 {
     private $pagination;
 

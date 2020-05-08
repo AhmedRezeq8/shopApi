@@ -29,5 +29,9 @@ class Products extends Model
     {
         return $this->hasMany('App\StoreProducts');
     }
+    public function orderDetails()
+    {
+        return $this->hasMany('App\OrderDetails');
+    }
 
 }

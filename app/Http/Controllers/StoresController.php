@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\StoreCollection;
 use App\Stores;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Validator;
 
 class StoresController extends Controller
@@ -15,9 +17,8 @@ class StoresController extends Controller
      */
     public function index()
     {
-        $productList = Stores::paginate(10);
 
-        return response()->json($productList, 200);
+        return new StoreCollection(Stores::paginate(5));
 
     }
 
@@ -59,11 +60,11 @@ class StoresController extends Controller
      */
     public function show($id)
     {
-        $Store =Stores::find($id);
+        $Store = Stores::find($id);
         if (is_null($Store)) {
-            return response()->json(["message"=>"Record not found!"],404);
+            return response()->json(["message" => "Record not found!"], 404);
         }
-        return response()->json($Store,200);
+        return response()->json($Store, 200);
     }
 
     /**
@@ -86,12 +87,12 @@ class StoresController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $Store =Stores::find($id);
+        $Store = Stores::find($id);
         if (is_null($Store)) {
-            return response()->json(["message"=>"Record not found!"],404);
+            return response()->json(["message" => "Record not found!"], 404);
         }
         $Store->update($request->all());
-        return response()->json($Store,200);
+        return response()->json($Store, 200);
     }
 
     /**
@@ -102,11 +103,11 @@ class StoresController extends Controller
      */
     public function destroy($id)
     {
-        $Store =Stores::find($id);
+        $Store = Stores::find($id);
         if (is_null($Store)) {
-            return response()->json(["message"=>"Record not found!"],404);
+            return response()->json(["message" => "Record not found!"], 404);
         }
         $Store->delete();
-        return response()->json(["message"=>"Record deleted "],204);
+        return response()->json(["message" => "Record deleted "], 204);
     }
 }

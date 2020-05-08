@@ -8,14 +8,21 @@ class StoreProducts extends Model
 {
     protected $table = "store_products";
     protected $fillable = [
+        'id',
         'store_id',
         'product_id',
         'productPrice',
         'productDiscount',
         'productStock',
+        'category_id',
+
         'created_at',
         'updated_at',
     ];
+    public function getRouteKeyName()
+    {
+        return 'store_id';
+    }
 
     public function store()
     {
@@ -26,5 +33,12 @@ class StoreProducts extends Model
     {
         return $this->belongsTo('App\Products');
     }
-
+    public function category()
+    {
+        return $this->belongsTo('App\category');
+    }
+    public function carts()
+    {
+        return $this->hasMany('App\Carts');
+    }
 }

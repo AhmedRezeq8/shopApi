@@ -4,10 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class userType extends Model
-{
+class UserType extends Model
+{ protected $table = "user_types";
+    protected $fillable = [
+
+        'name',
+        'created_at',
+        'updated_at',
+    ];
     public function users()
     {
-        return $this->belongsTo('App\Users');
+        return $this->hasMany('App\Users');
     }
 }

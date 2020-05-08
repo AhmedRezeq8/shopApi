@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\StoreProductCollection;
-use App\StoreProducts;
+use App\Carts;
+use App\Http\Resources\CartCollection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Validator;
 
-class StoreProductsController extends Controller
+class CartController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,10 +17,7 @@ class StoreProductsController extends Controller
      */
     public function index()
     {
-        // $productList = StoreProducts::paginate(10);
-
-        // return response()->json($productList, 200);
-        return new StoreProductCollection(StoreProducts::paginate(10));
+        return new CartCollection(carts::paginate(20));
     }
 
     /**
@@ -41,15 +39,15 @@ class StoreProductsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'store_id' => 'required',
-            'product_id' => 'required',
+            'user_id' => 'required',
+            'storeProduct_id' => 'required',
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        $storeProducts = StoreProducts::create($request->all());
-        return response()->json($storeProducts, 201);
+        $cart = Carts::create($request->all());
+        return response()->json($cart, 201);
     }
 
     /**
@@ -61,29 +59,35 @@ class StoreProductsController extends Controller
     public function show($id)
     {
 
-        $StoreProducts = StoreProducts::find($id);
-        if (is_null($StoreProducts)) {
+        $cart = Carts::find($id);
+        if (is_null($cart)) {
             return response()->json(["message" => "Record not found!"], 404);
         }
-
-        return new StoreProductCollection(StoreProducts::where('id', $id)->paginate(10));
-
-        // return response()->json($StoreProducts, 200);
+        return response()->json($cart, 200);
 
     }
 
-    public function getbystore($storeid)
+    public function cartByUserId($userid)
     {
+        $cart = DB::table('carts')
+            ->join('store_products', 'carts.storeProduct_id', '=', 'store_products.id')
+            ->join('products', 'store_products.product_id', '=', 'products.id')
+            ->select('store_products.*', 'products.*', 'carts.*')
+            ->where('carts.user_id', '=', $userid)
+            ->groupBy('products.id')
+            ->paginate(100);
 
-        return new StoreProductCollection(StoreProducts::groupBy('category_id')->where('store_id', $storeid)->paginate(10));
+        return response()->json($cart, 200);
 
     }
-    public function getbyCatStore($storeid, $catid)
+    public function cartByStoreProductId($storeProductid)
     {
-        return new StoreProductCollection(StoreProducts::groupBy('product_id')->where([
-            ['store_id', '=', $storeid],
-            ['category_id', '=', $catid],
-        ])->paginate(10));
+        if (Carts::where('carts.storeProduct_id', '=', $storeProductid)->exists()) {
+            return '1';
+        } else {
+            return '0';
+        }
+
     }
     /**
      * Show the form for editing the specified resource.
@@ -105,12 +109,12 @@ class StoreProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $storeProducts = StoreProducts::find($id);
-        if (is_null($storeProducts)) {
+        $cart = Carts::find($id);
+        if (is_null($cart)) {
             return response()->json(["message" => "Record not found!"], 404);
         }
-        $storeProducts->update($request->all());
-        return response()->json($storeProducts, 200);
+        $cart->update($request->all());
+        return response()->json($cart, 200);
     }
 
     /**
@@ -121,11 +125,11 @@ class StoreProductsController extends Controller
      */
     public function destroy($id)
     {
-        $storeProducts = StoreProducts::find($id);
-        if (is_null($storeProducts)) {
+        $cart = Carts::find($id);
+        if (is_null($cart)) {
             return response()->json(["message" => "Record not found!"], 404);
         }
-        $storeProducts->delete();
+        $cart->delete();
         return response()->json(["message" => "Record deleted "], 204);
     }
 }
